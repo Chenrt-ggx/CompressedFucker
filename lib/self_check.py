@@ -1,4 +1,5 @@
-import platform
+import os
+import time
 from lib.main_runner import get_pwd
 from lib.test_unzip import test_unzip
 from lib.test_unrar import test_unrar
@@ -58,6 +59,17 @@ def standard_test() -> None:
     test_six_digit('assets/zip_all_digit_legacy.zip')
     print('-' * 30)
     test_six_digit('assets/zip_all_digit_normal.zip')
+
+
+def extra_test() -> None:
+    print('-' * 30)
+    test_single_rar_pwd('assets/rar_linux_special_name_alpha_no_name.rar', '"')
+    print('-' * 30)
+    test_single_rar_pwd('assets/rar_linux_special_name_alpha_normal.rar', '"')
+    print('-' * 30)
+    test_single_rar_pwd('assets/rar_linux_special_name_beta_no_name.rar', '\' " \'')
+    print('-' * 30)
+    test_single_rar_pwd('assets/rar_linux_special_name_beta_normal.rar', '\' " \'')
     print('-' * 30)
     test_single_zip_pwd('assets/zip_all_special_name_alpha_legacy.zip', '"')
     print('-' * 30)
@@ -68,20 +80,10 @@ def standard_test() -> None:
     test_single_zip_pwd('assets/zip_all_special_name_beta_normal.zip', '\' " \'')
 
 
-def extra_test() -> None:
-    if 'Linux'.lower() in platform.platform().lower():
-        print('-' * 30)
-        test_single_rar_pwd('assets/rar_linux_special_name_alpha_no_name.rar', '"')
-        print('-' * 30)
-        test_single_rar_pwd('assets/rar_linux_special_name_alpha_normal.rar', '"')
-        print('-' * 30)
-        test_single_rar_pwd('assets/rar_linux_special_name_beta_no_name.rar', '\' " \'')
-        print('-' * 30)
-        test_single_rar_pwd('assets/rar_linux_special_name_beta_normal.rar', '\' " \'')
-
-
 def self_check() -> None:
     standard_test()
     extra_test()
+    time.sleep(0.1)
+    os.system('rm -rf ./temp')
     print('-' * 30)
     print('self test finished')

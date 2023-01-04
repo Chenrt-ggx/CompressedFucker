@@ -1,8 +1,10 @@
+import os
+import time
 import datetime
 import threading
+from lib.lib_exception import UnsupportedFileType
 from lib.test_unzip import file_check as zip_file_check, test_unzip
 from lib.test_unrar import file_check as rar_file_check, test_unrar
-from lib.lib_exception import UnsupportedPassword, UnsupportedFileType
 
 
 def timestamp_print(text: str) -> None:
@@ -28,12 +30,11 @@ def get_pwd(file: str, pwd_list: list, threads: int = 1 << 5) -> str:
             mutex['index'] += 1
             mutex['lock'].release()
             pwd = pwd_list[item]
-            try:
-                if method(file, pwd):
-                    mutex['result'] = pwd
-            except UnsupportedPassword:
-                timestamp_print('skip ' + pwd)
-                pass
+            if method(file, pwd):
+                mutex['result'] = pwd
+
+    if 'temp' not in os.listdir():
+        os.mkdir('./temp')
 
     if file.lower().endswith('.zip'):
         zip_file_check(file)
@@ -51,4 +52,7 @@ def get_pwd(file: str, pwd_list: list, threads: int = 1 << 5) -> str:
     timestamp_print(str(len(thread_list)) + ' threads started')
     for i in thread_list:
         i.join()
+
+    time.sleep(0.1)
+    os.system('rm -rf ./temp')
     return mutex['result']

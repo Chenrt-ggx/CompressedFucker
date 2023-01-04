@@ -14,10 +14,6 @@ class UnsupportedFileType(Exception):
     pass
 
 
-class UnsupportedPassword(Exception):
-    pass
-
-
 class BadGenerateLengthRange(Exception):
     pass
 
