@@ -33,15 +33,39 @@ def test_dict(file: str) -> None:
     print(result if result != '' else 'No Match')
 
 
-def self_test():
-    test_six_digit('assets/rar_all_alpha.rar')
-    test_dict('assets/rar_all_beta.rar')
-    test_six_digit('assets/zip_all_alpha.zip')
-    test_single_zip_pwd('assets/zip_all_beta.zip', '"')
-    test_single_zip_pwd('assets/zip_all_gamma.zip', '\' " \'')
+def standard_test() -> None:
+    print('-' * 30)
+    test_four_alnum('assets/rar_all_alnum_no_name.rar')
+    print('-' * 30)
+    test_four_alnum('assets/rar_all_alnum_normal.rar')
+    print('-' * 30)
+    test_dict('assets/rar_all_dict_no_name.rar')
+    print('-' * 30)
+    test_dict('assets/rar_all_dict_normal.rar')
+    print('-' * 30)
+    test_six_digit('assets/rar_all_digit_no_name.rar')
+    print('-' * 30)
+    test_six_digit('assets/rar_all_digit_normal.rar')
+    print('-' * 30)
+    test_four_alnum('assets/zip_all_alnum_normal.zip')
+    print('-' * 30)
+    test_dict('assets/zip_all_dict_normal.zip')
+    print('-' * 30)
+    test_six_digit('assets/zip_all_digit_normal.zip')
+    print('-' * 30)
+    test_single_zip_pwd('assets/zip_all_special_name_alpha.zip', '"')
+    print('-' * 30)
+    test_single_zip_pwd('assets/zip_all_special_name_beta.zip', '\' " \'')
+
+
+def extra_test() -> None:
     if 'Linux'.lower() in platform.platform().lower():
-        test_single_rar_pwd('assets/rar_linux_alpha.rar', '"')
-        test_single_rar_pwd('assets/rar_linux_beta.rar', '\' " \'')
-        test_six_digit('assets/zip_linux_alpha.zip')
-        test_single_zip_pwd('assets/zip_linux_beta.zip', '"')
-        test_single_zip_pwd('assets/zip_linux_gamma.zip', '\' " \'')
+        print('-' * 30)
+        test_single_rar_pwd('assets/rar_linux_special_name_alpha.rar', '"')
+        print('-' * 30)
+        test_single_rar_pwd('assets/rar_linux_special_name_beta.rar', '\' " \'')
+
+
+def self_check() -> None:
+    standard_test()
+    extra_test()

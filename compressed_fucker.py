@@ -1,4 +1,4 @@
-from lib.self_check import self_test
+from lib.self_check import self_check
 
 if __name__ == '__main__':
-    self_test()
+    self_check()
