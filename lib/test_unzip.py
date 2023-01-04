@@ -1,30 +1,28 @@
-import zipfile
+import pyzipper
 import platform
 import subprocess
 from lib.pwd_loader import fix_password
-from lib.lib_exception import CompressedFileNotExist, WrongZipFileFormat, UnsupportedZipFileFormat
+from lib.lib_exception import CompressedFileNotExist, WrongZipFileFormat
 
 
 def file_check(file: str) -> None:
     try:
         with open(file, 'r') as _:
-            file = zipfile.ZipFile(file)
+            file = pyzipper.AESZipFile(file)
             file.close()
     except FileNotFoundError:
         raise CompressedFileNotExist
-    except zipfile.BadZipfile:
+    except pyzipper.zipfile.BadZipFile:
         raise WrongZipFileFormat
 
 
 def test_unzip(file: str, pwd: str = None) -> bool:
     def win_test(w_file: str, w_pwd: str = None) -> bool:
         try:
-            with zipfile.ZipFile(w_file) as w_file:
+            with pyzipper.AESZipFile(w_file) as w_file:
                 w_file.setpassword(w_pwd.encode())
                 w_file.testzip()
             return True
-        except NotImplementedError:
-            raise UnsupportedZipFileFormat
         except RuntimeError as exception:
             if 'Bad password' in str(exception):
                 return False
